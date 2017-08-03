@@ -14,7 +14,7 @@ class NejeImage:
         im = im.resize((512, 512), Image.NEAREST)
         im = im.convert('1').transpose(Image.FLIP_TOP_BOTTOM)
 
-        self.data = im.tobitmap()
+        self.data = im.getdata()
 
     def get(self):
         return self.data
@@ -61,13 +61,13 @@ class Neje:
 
     def load_image(self, image_data):
         a = 0
+        print('Erasing EEPROM 8/' + str(a), ',')
         while a < 8:
             a = a + 1
-            print('Erase EEPROM 8/' + str(a))
-            # erase eeprom
+            print(str(a), ',')
             self.ser.write(b'\xFE')
 
-        # upload to eeprom
+        print('writing image data to EEPROM')
         self.ser.write(image_data)
 
 
@@ -87,7 +87,8 @@ def cli(ctx, port):
 @click.argument('name')
 @click.pass_context
 def load(ctx, name):
-    ctx.obj.neje.load_image(image_data=NejeImage(name).get())
+    image_data = NejeImage(name).get()
+    ctx.obj.neje.load_image(image_data=image_data)
 
 
 @cli.command('burn')

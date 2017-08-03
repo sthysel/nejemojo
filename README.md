@@ -1,6 +1,24 @@
 # nejemojo
 
-NeJe engraver tool
+NeJe engraver tool. Loads and burns images on your NeJe mini-burner.
+
+# Usage
+
+``` sh
+Usage: nejemojo [OPTIONS] COMMAND [ARGS]...
+
+Options:
+  -p, --port TEXT  The serial port  [default: /dev/ttyUSB0]
+  --help           Show this message and exit.
+
+Commands:
+  burn
+  home
+  load
+  pause
+  preview
+  reset
+```
 
 # TTY settings
 
@@ -26,4 +44,3 @@ baud 57600, 8 data bits, 1 stop bit, parity none
 | 0xfc                       | fast backward <parameter 0x55> fast forward <parameter 0xaa> recarve <parameter 0x77>    |
 | 0xfe x8                    | erase + send picture <picture data bmp> (BMP specification Black & White 512x512px)      |
 
-Reverse engineered by Alex Kuklin

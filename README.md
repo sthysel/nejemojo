@@ -1,5 +1,7 @@
 # nejemojo
 
+![](docs/neje.jpg)
+
 NeJe engraver tool. Loads and burns images on your NeJe mini-burner.
 
 # Usage

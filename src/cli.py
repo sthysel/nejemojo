@@ -59,14 +59,19 @@ class Neje:
     def move_center(self):
         self.ser.write(b'\xFB')
 
-    def load_image(self, image_data):
-        a = 0
-        print('Erasing EEPROM 8/' + str(a), ',')
-        while a < 8:
-            a = a + 1
-            print(str(a), ',')
+    def erase(self):
+        """ erase eeprom """
+
+        print('Erasing EEPROM:', end='')
+
+        for i in range(8):
+            print(str(i), end='')
             self.ser.write(b'\xFE')
 
+        print('done')
+
+    def load_image(self, image_data):
+        self.erase()
         print('writing image data to EEPROM')
         self.ser.write(image_data)
 
@@ -87,6 +92,7 @@ def cli(ctx, port):
 @click.argument('name')
 @click.pass_context
 def load(ctx, name):
+    """ Load the image"""
     image_data = NejeImage(name).get()
     ctx.obj.neje.load_image(image_data=image_data)
 
@@ -94,32 +100,44 @@ def load(ctx, name):
 @cli.command('burn')
 @click.pass_context
 def burn(ctx):
+    """ Burn the image """
     ctx.obj.neje.engrave_memory()
+
+
+@cli.command('erase')
+@click.pass_context
+def burn(ctx):
+    """ Erase image from eeprom"""
+    ctx.obj.neje.erase()
 
 
 @cli.command('pause')
 @click.pass_context
 def pause(ctx):
+    """ Pause Neje burning"""
     ctx.obj.neje.engrave_pause()
 
 
 @cli.command('home')
 @click.pass_context
 def home(ctx):
+    """ Move to home position """
     ctx.obj.neje.move_home()
 
 
 @cli.command('preview')
 @click.pass_context
 def preview(ctx):
+    """ Draws preview box"""
     ctx.obj.neje.engrave_preview()
 
 
 @cli.command('reset')
 @click.pass_context
 def reset(ctx):
+    """Reset Neje"""
     ctx.obj.neje.reset()
 
 
-if __name__ == '__main__':
+def main():
     cli(obj=Config())

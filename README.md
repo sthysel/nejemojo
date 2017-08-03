@@ -5,6 +5,9 @@ NeJe engraver tool. Loads and burns images on your NeJe mini-burner.
 # Usage
 
 ``` sh
+
+$ nejemojo --help
+
 Usage: nejemojo [OPTIONS] COMMAND [ARGS]...
 
 Options:
@@ -12,12 +15,14 @@ Options:
   --help           Show this message and exit.
 
 Commands:
-  burn
-  home
-  load
-  pause
-  preview
-  reset
+  burn     Burn the image
+  erase    Erase image from eeprom
+  home     Move to home position
+  load     Load the image
+  pause    Pause Neje burning
+  preview  Draws preview box
+  reset    Reset Neje
+  
 ```
 
 # TTY settings

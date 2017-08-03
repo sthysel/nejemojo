@@ -1,3 +1,5 @@
+import time
+
 import click
 import serial
 from PIL import Image
@@ -38,6 +40,10 @@ class Neje:
         else:
             print('no mojo: {}'.format(res))
 
+    def read(self):
+        while True:
+            print(self.ser.read(1))
+
     def engrave_memory(self):
         # set 60 ms
         self.ser.write(b'\x3C')
@@ -54,7 +60,9 @@ class Neje:
         self.ser.write(b'\xF9')
 
     def move_home(self):
+        print('Moving home...')
         self.ser.write(b'\xF3')
+        time.sleep(5)
 
     def move_center(self):
         self.ser.write(b'\xFB')
@@ -68,12 +76,14 @@ class Neje:
             print(str(i), end='')
             self.ser.write(b'\xFE')
 
-        print('done')
+        print('\ndone')
 
     def load_image(self, image_data):
         self.erase()
+
         print('writing image data to EEPROM')
         self.ser.write(image_data)
+        print('done uploading, press button to burn')
 
 
 class Config:
@@ -103,6 +113,11 @@ def burn(ctx):
     """ Burn the image """
     ctx.obj.neje.engrave_memory()
 
+@cli.command('read')
+@click.pass_context
+def burn(ctx):
+    """ Read from port"""
+    ctx.obj.neje.read()
 
 @cli.command('erase')
 @click.pass_context

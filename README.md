@@ -2,7 +2,7 @@
 
 ![](docs/neje.jpg)
 
-NeJe engraver tool. Loads and burns images on your NeJe mini-burner.
+NeJe NEJE DK-8 Pro-5 500mW Laser Engraver tool. Loads and burns images on your NeJe mini-burner.
 
 # Usage
 

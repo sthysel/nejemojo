@@ -11,12 +11,16 @@ baud_rate = 57600
 
 class NejeImage:
     def __init__(self, file_path):
-        im = Image.open(file_path)
+        try:
+            im = Image.open(file_path)
+        except FileNotFoundError as e:
+            click.secho('{}: {}'.format(e.strerror, e.filename), fg='red')
+            exit()
+        else:
+            im = im.resize((512, 512), Image.NEAREST)
+            im = im.convert('1').transpose(Image.FLIP_TOP_BOTTOM)
 
-        im = im.resize((512, 512), Image.NEAREST)
-        im = im.convert('1').transpose(Image.FLIP_TOP_BOTTOM)
-
-        self.data = im.getdata()
+            self.data = im.getdata()
 
     def get(self):
         return self.data
@@ -36,13 +40,13 @@ class Neje:
         self.ser.write(b'\xF6')
         res = self.ser.read(2)
         if res == b'e\xfb':
-            print('nejemojo is go')
+            click.secho('nejemojo is go', fg='green')
         else:
-            print('no mojo: {}'.format(res))
+            click.secho('no mojo: {}'.format(res), fg='red')
 
     def read(self):
         while True:
-            print(self.ser.read(1))
+            click.secho(self.ser.read(1), fg='yellow')
 
     def engrave_memory(self):
         # set 60 ms
@@ -60,7 +64,7 @@ class Neje:
         self.ser.write(b'\xF9')
 
     def move_home(self):
-        print('Moving home...')
+        click.secho('Moving home...')
         self.ser.write(b'\xF3')
         time.sleep(5)
 
@@ -70,20 +74,20 @@ class Neje:
     def erase(self):
         """ erase eeprom """
 
-        print('Erasing EEPROM:', end='')
+        click.secho('Erasing EEPROM:', nl=False, fg='yellow')
 
         for i in range(8):
-            print(str(i), end='')
+            click.secho(str(i), nl=False)
             self.ser.write(b'\xFE')
 
-        print('\ndone')
+        click.secho('\ndone')
 
     def load_image(self, image_data):
         self.erase()
 
-        print('writing image data to EEPROM')
+        click.secho('writing image data to EEPROM')
         self.ser.write(image_data)
-        print('done uploading, press button to burn')
+        click.secho('done uploading, press button to burn')
 
 
 class Config:
@@ -103,8 +107,11 @@ def cli(ctx, port):
 @click.pass_context
 def load(ctx, name):
     """ Load the image"""
+
+    neje = ctx.obj.neje
     image_data = NejeImage(name).get()
-    ctx.obj.neje.load_image(image_data=image_data)
+    neje.load_image(image_data=image_data)
+    neje.move_home()
 
 
 @cli.command('burn')
@@ -113,11 +120,13 @@ def burn(ctx):
     """ Burn the image """
     ctx.obj.neje.engrave_memory()
 
+
 @cli.command('read')
 @click.pass_context
 def burn(ctx):
     """ Read from port"""
     ctx.obj.neje.read()
+
 
 @cli.command('erase')
 @click.pass_context

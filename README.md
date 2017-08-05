@@ -17,14 +17,16 @@ Options:
   --help           Show this message and exit.
 
 Commands:
-  burn     Burn the image
-  erase    Erase image from eeprom
-  home     Move to home position
-  load     Load the image
-  pause    Pause Neje burning
-  preview  Draws preview box
-  reset    Reset Neje
-  
+  box       Draws preview box
+  burn      Burn the image
+  burntime  Set the pulse burn time, the longer the...
+  erase     Erase image from eeprom
+  home      Move to home position
+  load      Load the image
+  pause     Pause Neje burning
+  read      Read from port
+  reset     Reset Neje
+  view      View the image
 ```
 
 # TTY settings

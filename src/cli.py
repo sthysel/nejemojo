@@ -58,8 +58,14 @@ class Neje:
             # click.secho(str(self.ser.read(1), 'ascii', 'ignore'), fg='yellow', nl=False)
             print(self.ser.read(1))
 
+    def set_burntime(self, time=60):
+        if time > 255 or time < 1:
+            click.echo('Pic burn time per pulse between 1 and 255')
+            exit()
+
+        self.ser.write(bytes[time])
+
     def engrave_memory(self):
-        self.ser.write(b'\x40')
         # engrave
         self.ser.write(b'\xF1')
 
@@ -95,20 +101,20 @@ class Neje:
     def erase(self):
         """ erase eeprom """
 
-        click.secho('Erasing EEPROM:', nl=False, fg='yellow')
+        click.secho('Erasing EEPROM: ', nl=False, fg='yellow')
 
         for i in range(8):
             click.secho(str(i), nl=False)
             self.ser.write(b'\xFE')
 
-        click.secho('\ndone')
+        click.secho(' complete', fg='yellow')
 
     def load_image(self, image_data):
         self.erase()
         time.sleep(3)
         click.secho('writing image data to EEPROM')
         self.ser.write(image_data)
-        click.secho('done uploading, press button to burn')
+        click.secho('done uploading, try burning next')
 
 
 class Config:
@@ -144,10 +150,25 @@ def load(ctx, name):
 
 
 @cli.command('burn')
+@click.option('-m', '--monitor', default=False, help='Monitor progress', show_default=True)
 @click.pass_context
-def burn(ctx):
+def burn(ctx, monitor):
     """ Burn the image """
-    ctx.obj.neje.engrave_memory()
+
+    neje = ctx.obj.neje
+    neje.engrave_memory()
+    if monitor:
+        neje.read()
+
+
+@cli.command('burntime')
+@click.argument('burntime')
+@click.pass_context
+def burn(ctx, burntime):
+    """ Set the pulse burn time, the longer the darker """
+
+    neje = ctx.obj.neje
+    neje.set_burntime(time)
 
 
 @cli.command('read')

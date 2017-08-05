@@ -46,11 +46,13 @@ class Neje:
         if res == b'e\xfb':
             click.secho('nejemojo is go', fg='green')
         else:
-            click.secho('no mojo: {}'.format(res), fg='red')
+            click.secho('bad mojo: {}'.format(res), fg='red')
 
     def read(self):
         while True:
-            click.secho(self.ser.read(1), fg='yellow')
+            # click.secho(str(self.ser.read(1), 'utf8', 'ignore'), fg='yellow', nl=False)
+            # click.secho(str(self.ser.read(1), 'ascii', 'ignore'), fg='yellow', nl=False)
+            print(self.ser.read(1))
 
     def engrave_memory(self):
         # set 60 ms
@@ -74,6 +76,18 @@ class Neje:
 
     def move_center(self):
         self.ser.write(b'\xFB')
+
+    def move_up(self, distance=1):
+        [self.ser.write(b'\xF5\x01') for _ in range(0, distance)]
+
+    def move_down(self, distance=1):
+        [self.ser.write(b'\xF5\x02') for _ in range(0, distance)]
+
+    def move_left(self, distance=1):
+        [self.ser.write(b'\xF5\x03') for _ in range(0, distance)]
+
+    def move_right(self, distance=1):
+        [self.ser.write(b'\xF5\x04') for _ in range(0, distance)]
 
     def erase(self):
         """ erase eeprom """

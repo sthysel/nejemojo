@@ -1,3 +1,4 @@
+import io
 import time
 
 import click
@@ -21,7 +22,10 @@ class NejeImage:
             im = im.convert('1').transpose(Image.FLIP_TOP_BOTTOM)
 
             self.image = im
-            self.data = im.getdata()
+
+            _bytes = io.BytesIO()
+            im.save(_bytes, format='BMP')
+            self.data = _bytes.getvalue()
 
     def view(self):
         self.image.show()
@@ -55,8 +59,7 @@ class Neje:
             print(self.ser.read(1))
 
     def engrave_memory(self):
-        # set 60 ms
-        self.ser.write(b'\x3C')
+        self.ser.write(b'\x40')
         # engrave
         self.ser.write(b'\xF1')
 
@@ -102,7 +105,7 @@ class Neje:
 
     def load_image(self, image_data):
         self.erase()
-
+        time.sleep(3)
         click.secho('writing image data to EEPROM')
         self.ser.write(image_data)
         click.secho('done uploading, press button to burn')

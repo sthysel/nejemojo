@@ -20,7 +20,11 @@ class NejeImage:
             im = im.resize((512, 512), Image.NEAREST)
             im = im.convert('1').transpose(Image.FLIP_TOP_BOTTOM)
 
+            self.image = im
             self.data = im.getdata()
+
+    def view(self):
+        self.image.show()
 
     def get(self):
         return self.data
@@ -102,6 +106,14 @@ def cli(ctx, port):
     ctx.obj.neje = neje
 
 
+@cli.command('view')
+@click.argument('name')
+def view(name):
+    """ View the image"""
+
+    NejeImage(name).view()
+
+
 @cli.command('load')
 @click.argument('name')
 @click.pass_context
@@ -149,9 +161,9 @@ def home(ctx):
     ctx.obj.neje.move_home()
 
 
-@cli.command('preview')
+@cli.command('box')
 @click.pass_context
-def preview(ctx):
+def box(ctx):
     """ Draws preview box"""
     ctx.obj.neje.engrave_preview()
 
@@ -163,5 +175,13 @@ def reset(ctx):
     ctx.obj.neje.reset()
 
 
-def main():
+def neje():
     cli(obj=Config())
+
+
+@click.command()
+@click.argument('name')
+def view(name):
+    """ View the image"""
+
+    NejeImage(name).view()

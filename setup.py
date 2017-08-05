@@ -9,7 +9,8 @@ setup(
     version='0.0.1',
     entry_points={
         'console_scripts': [
-            'nejemojo=cli:main',
+            'nejemojo=cli:neje',
+            'nejeview=cli:view',
         ]
     },
     install_requires=[

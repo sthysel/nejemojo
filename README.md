@@ -6,7 +6,7 @@ NeJe NEJE DK-8 Pro-5 500mW Laser Engraver tool. Loads and burns images on your N
 
 # Usage
 
-``` sh
+```
 
 $ nejemojo --help
 
@@ -19,7 +19,7 @@ Options:
 Commands:
   box       Draws preview box
   burn      Burn the image
-  burntime  Set the pulse burn time, the longer the...
+  burntime  Set the pulse burn time, the longer the darker
   erase     Erase image from eeprom
   home      Move to home position
   load      Load the image

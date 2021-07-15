@@ -2,14 +2,14 @@
 
 ![NEJE](docs/neje.jpg)
 
+NeJe NEJE DK-8 Pro-5 500mW Laser Engraver tool. Loads and burns images on your NeJe mini-burner.
+
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/sthysel/nejemojo/master.svg)](https://results.pre-commit.ci/latest/github/sthysel/nejemojo/master)
 
-NeJe NEJE DK-8 Pro-5 500mW Laser Engraver tool. Loads and burns images on your NeJe mini-burner.
 
 # Usage
 
-```
-
+```zsh
 $ nejemojo --help
 
 Usage: nejemojo [OPTIONS] COMMAND [ARGS]...
@@ -57,3 +57,18 @@ Commands:
 |                       0xfb | go to center                                                                             |
 |                       0xfc | fast backward <parameter 0x55> fast forward <parameter 0xaa> recarve <parameter 0x77>    |
 |                    0xfe x8 | erase + send picture <picture data bmp> (BMP specification Black & White 512x512px)      |
+
+
+# Install
+
+Seems tkinter is not the dejour GUI lib it used to be, thats propably a good thing.
+
+```zsh
+$ sudo pacman -S tk
+```
+
+Need to be able to use ttyUSBn as normal user.
+
+```zsh
+$ sudo gpasswd -a $USER uucp
+```

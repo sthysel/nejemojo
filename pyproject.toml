@@ -3,7 +3,15 @@ name = "nejemojo"
 version = "0.1.0"
 description = "Drives your NEJE desktop engraver"
 authors = ["sthysel <sthysel@gmail>"]
-license = "MIT"
+license = "GPL"
+
+packages = [
+    { include = "nejemojo", from = "src" }
+]
+
+[tool.poetry.scripts]
+nejemojo = "nejemojo.cli:neje"
+nejeview = "nejemojo.cli:view"
 
 [tool.poetry.dependencies]
 python = "^3.9"

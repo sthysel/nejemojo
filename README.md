@@ -1,7 +1,8 @@
 # nejemojo (Version 0.1.0)
 
-[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/sthysel/nejemojo/master.svg)](https://results.pre-commit.ci/latest/github/sthysel/nejemojo/master)
 ![NEJE](docs/neje.jpg)
+
+[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/sthysel/nejemojo/master.svg)](https://results.pre-commit.ci/latest/github/sthysel/nejemojo/master)
 
 NeJe NEJE DK-8 Pro-5 500mW Laser Engraver tool. Loads and burns images on your NeJe mini-burner.
 
